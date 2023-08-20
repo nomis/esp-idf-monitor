@@ -127,7 +127,10 @@ class SerialReader(Reader):
 
         # set serial_struct
         buf = struct.pack(struct_format, *serial_struct)
-        fcntl.ioctl(self.serial.fd, termios.TIOCSSERIAL, buf)
+        try:
+            fcntl.ioctl(self.serial.fd, termios.TIOCSSERIAL, buf)
+        except PermissionError:
+            pass
 
     def _cancel(self):
         #  type: () -> None
