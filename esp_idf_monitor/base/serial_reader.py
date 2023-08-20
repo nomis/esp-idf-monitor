@@ -102,6 +102,8 @@ class SerialReader(Reader):
     def close_serial(self):
         if sys.platform == 'linux':
             # Avoid waiting for 30 seconds before closing the serial connection
+            import termios
+            termios.tcflush(self.serial.fd, termios.TCOFLUSH)
             self.set_closing_wait(delay_sec=1)
         self.serial.close()
 
